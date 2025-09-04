@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Responsive Landing Page</title>
+<style>
+/* Reset & Base */
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height:1.6; color:#333; overflow-x:hidden;}
+a {text-decoration:none;}
+
+/* Navbar */
+.navbar {position: fixed; top:0; left:0; width:100%; background: rgba(0,0,0,0.1); backdrop-filter: blur(10px); z-index: 1000; transition: all 0.3s ease; padding:1rem 0;}
+.navbar.scrolled {background: rgba(0,0,0,0.9); padding:0.5rem 0;}
+.nav-container {max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:0 2rem;}
+.logo {font-size:1.8rem; font-weight:bold; color:#00d4ff;}
+.nav-menu {display:flex; list-style:none; gap:2rem;}
+.nav-item {position:relative;}
+.nav-link {color:white; font-weight:500; padding:0.5rem 1rem; border-radius:25px; position:relative; overflow:hidden; transition:all 0.3s ease;}
+.nav-link:before {content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(45deg, #00d4ff, #7b68ee); transition:left 0.3s ease; z-index:-1;}
+.nav-link:hover:before {left:0;}
+.nav-link:hover {transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,212,255,0.4);}
+.menu-toggle {display:none; background:none; border:none; font-size:1.5rem; color:white; cursor:pointer;}
+
+/* Hero Section */
+.hero {height:100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; text-align:center; color:white; position:relative; overflow:hidden;}
+.hero::before {content:''; position:absolute; top:0; left:0; right:0; bottom:0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff10" points="0,1000 1000,0 1000,1000"/></svg>');}
+.hero-content {max-width:800px; padding:2rem; position:relative; z-index:2;}
+.hero h1 {font-size:4rem; margin-bottom:1rem; animation:fadeInUp 1s ease;}
+.hero p {font-size:1.3rem; margin-bottom:2rem; animation:fadeInUp 1s ease 0.2s both;}
+.cta-button {display:inline-block; padding:1rem 2rem; background: linear-gradient(45deg, #00d4ff, #7b68ee); color:white; border-radius:50px; font-weight:bold; transition: all 0.3s ease; animation:fadeInUp 1s ease 0.4s both;}
+.cta-button:hover {transform:translateY(-3px); box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+
+/* Sections */
+.section {padding:5rem 2rem; max-width:1200px; margin:0 auto;}
+.section h2 {font-size:2.5rem; text-align:center; margin-bottom:3rem; color:#333;}
+
+/* Features */
+.features {background:#f8f9fa;}
+.features-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem;}
+.feature-card {background:white; padding:2rem; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); text-align:center; transition: transform 0.3s ease;}
+.feature-card:hover {transform:translateY(-10px);}
+.feature-icon {width:80px; height:80px; background: linear-gradient(45deg, #00d4ff, #7b68ee); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:2rem; color:white;}
+
+/* About */
+.about {display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;}
+.about-text {font-size:1.1rem; line-height:1.8;}
+.about-image {width:100%; height:400px; background:linear-gradient(45deg, #00d4ff, #7b68ee); border-radius:15px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem;}
+
+/* Footer */
+.footer {background:#333; color:white; text-align:center; padding:3rem 2rem;}
+.footer h2 {margin-bottom:1rem;}
+.footer p {margin:0.5rem 0;}
+
+/* Scroll Indicator */
+.scroll-indicator {position:fixed; top:0; left:0; width:0%; height:4px; background:linear-gradient(45deg, #00d4ff, #7b68ee); z-index:9999; transition:width 0.3s ease;}
+
+/* Animations */
+@keyframes fadeInUp {from {opacity:0; transform:translateY(50px);} to {opacity:1; transform:translateY(0);}}
+
+/* Responsive */
+@media (max-width:768px) {
+.menu-toggle {display:block;}
+.nav-menu {position:fixed; top:100%; left:0; width:100%; height:calc(100vh - 100%); background:rgba(0,0,0,0.95); flex-direction:column; justify-content:center; align-items:center; transform:translateX(-100%); transition:transform 0.3s ease;}
+.nav-menu.active {transform:translateX(0);}
+.nav-menu li {margin:1rem 0;}
+.hero h1 {font-size:2.5rem;}
+.hero p {font-size:1.1rem;}
+.about {grid-template-columns:1fr;}
+.section {padding:3rem 1rem;}
+}
+@media (max-width:480px) {
+.hero h1 {font-size:2rem;}
+.section h2 {font-size:2rem;}
+.features-grid {grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<!-- Scroll Indicator -->
+<div class="scroll-indicator" id="scrollIndicator"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+<div class="nav-container">
+<a href="#" class="logo">ModernPage</a>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<ul class="nav-menu" id="navMenu">
+<li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+<li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+<li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+<li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+<li class="nav-item"><a href="#contact" class="nav-link">Contact Us</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+<div class="hero-content">
+<h1>Modern Responsive Landing Page</h1>
+<p>Engaging animations, smooth scrolling, and interactive navigation for any device.</p>
+<a href="#features" class="cta-button">Get Started</a>
+</div>
+</section>
+
+<!-- Features -->
+<section class="section features" id="features">
+<h2>Our Features</h2>
+<div class="features-grid">
+<div class="feature-card"><div class="feature-icon">🚀</div><h3>Fast Performance</h3><p>Optimized code ensures lightning-fast loading across all devices.</p></div>
+<div class="feature-card"><div class="feature-icon">📱</div><h3>Responsive Design</h3><p>Looks perfect on desktop, tablet, or mobile with full responsiveness.</p></div>
+<div class="feature-card"><div class="feature-icon">🎨</div><h3>Modern UI</h3><p>Sleek, contemporary design with smooth animations for engagement.</p></div>
+</div>
+</section>
+
+<!-- About -->
+<section class="section" id="about">
+<h2>About Us</h2>
+<div class="about">
+<div class="about-text">
+<h3>We Build the Future</h3>
+<p>Creating interactive web experiences with dynamic navigation, smooth scrolling, and responsive layouts that work on every device.</p>
+</div>
+<div class="about-image">Interactive Design</div>
+</div>
+</section>
+
+<!-- Services -->
+<section class="section features" id="services">
+<h2>Our Services</h2>
+<div class="features-grid">
+<div class="feature-card"><div class="feature-icon">💻</div><h3>Web Development</h3><p>Custom websites built with modern technologies and best practices.</p></div>
+<div class="feature-card"><div class="feature-icon">🎯</div><h3>UI/UX Design</h3><p>User-centered design creating intuitive and interactive experiences.</p></div>
+<div class="feature-card"><div class="feature-icon">📈</div><h3>Digital Marketing</h3><p>Grow your online presence with targeted marketing strategies.</p></div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" id="contact">
+<h2>Contact Us</h2>
+<p>If you’re ready to start your project or have any questions, feel free to reach out to us!</p>
+<p>Email: contact@modernpage.com | Phone: +1 234 567 890</p>
+<p>© ModernPage. All rights reserved.</p>
+</footer>
+
+<script>
+// Scroll Navbar
+const navbar = document.getElementById('navbar');
+const scrollIndicator = document.getElementById('scrollIndicator');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+
+    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    scrollIndicator.style.width = scrollPercent + '%';
+});
+
+// Mobile Menu Toggle
+const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+menuToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+    menuToggle.innerHTML = navMenu.classList.contains('active') ? '✕' : '☰';
+});
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        navMenu.classList.remove('active');
+        menuToggle.innerHTML = '☰';
+        const target = document.querySelector(link.getAttribute('href'));
+        window.scrollTo({top: target.offsetTop - 70, behavior: 'smooth'});
+    });
+});
+
+// Animate feature cards
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.feature-card').forEach(card => {
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(50px)';
+    card.style.transition = 'all 0.6s ease';
+    observer.observe(card);
+});
+</script>
+</body>
+</html>
